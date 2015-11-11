@@ -1,9 +1,4 @@
-$.ajaxSetup({
-    headers: {
-      'X-Parse-Application-Id': 'YZa1r8vJforgRvO3RJCOnTNEQb085HIHOevDg9G3',
-      'X-Parse-REST-API-Key': '6mVCUbcHv9MESLSNAgQlEAzXucdCvwBbg2aeBBc5'
-    }
-  });
+
 
   //modules
   var Scientist = Backbone.Model.extend({
@@ -13,42 +8,74 @@ $.ajaxSetup({
     defaults:{
       genre:"Famous Scientist"
     },
-    
+    _parse_class_name:"FamousScientist",
+    idAttribute:"objectId"
+
     });
 
 
-    var Scientist = new Scientist();
+    var Router = Backbone.Router.extend ({
+      initialize:function(){
+        Backbone.history.start({pushState:true});
+      },
+      routes:{
+        "Scientist":"Scientist",
+        "field":"field",
+        "contributions":"contributions",
+        "":"index"
+      }
+    });
 
-    Scientist.set("field", "Theoretical Physicist")
-    Scientist.set({
+    var router = new Router();
+
+    router.on('rourte:Scientist', function(objectId){
+    var Scientist = new Scientist({objectId:objectId});
+    Scientist.fetch();
+    console.log(Scientist);
+    });
+
+    router.on('route:Scientist' , function(){
+      console.log("Scientist page");
+    });
+
+    router.on('route:field', function(){
+    console.log('field page');
+    $("a").css({color:"black"});
+    });
+
+
+   router.on('route:contributions' , function(){
+      console.log("contributions page");
+    });
+
+  $("a").on('click', function(e){
+    e.preventDefault();
+    var href = $(this).attr('href');
+    href = href.substr(1);
+    router.navigate(href,{trigger:true});
+  });
+
+
+
+    var famousScientist = new Scientist();
+
+    famousScientist.set("field", "Theoretical Physicist")
+    famousScientist.set({
     Scientist:"Albert Einstien",
     contributions:"Theory of Relativity",
     });
 
-    var field = Scientist.get("field");
+    var field = famousScientist.get("field");
 
 
-    var Scientists = Backbone.Collection.extend({
-   
-    model: Scientist,
-
-    });
-
-    var ScientistsCollection  = new Scientists();
-
-    var Scientist = new Scientist ([
-    new Scientist({ Scientist: "Albert Einstien"}),
-    new Scientist({ Scientist: "Nikoli Tesla"}),
-    new Scientist({ Scientist:"Issac Newton"})
-
-    ]);
-
-  Scientists.add(new Scientist({Scientist:"Marie Curie"}));
-
+var Scientists = Backbone.Collection.extend({
+  model: Scientist,
+  _parse_class_name: "FamousScientist"
+});
 
 var ScientistsCollection = new Scientists();
 
-Scientist.save(null, {
+famousScientist.save(null, {
   success: function(resp) {
     console.log(resp)
 
@@ -59,8 +86,8 @@ Scientist.save(null, {
         console.log("error: ", err);
       }
     })
-  },
-  error: function (err) {
+    },
+    error: function (err) {
     console.log(err)
   }
 });

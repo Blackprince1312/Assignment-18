@@ -1,7 +1,7 @@
 /********** PARSE API ACCESS CREDENTIALS **********/
 
-var application_id = "fPIAO5E3YKUXkP8gP9yOK07f65KOiZlrpkdI8jK6";
-var rest_api_key = "FAzQfoUWFd295pLJZ4mbycHiIEZ1mYC3jXxDX3yJ";
+var application_id = "YZa1r8vJforgRvO3RJCOnTNEQb085HIHOevDg9G3";
+var rest_api_key = "6mVCUbcHv9MESLSNAgQlEAzXucdCvwBbg2aeBBc5";
 var api_version = "1";
 
 /******************* END *************************/
